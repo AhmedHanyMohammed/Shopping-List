@@ -43,6 +43,10 @@ class MyHomePage extends StatelessWidget {
             ),
             title: Text(item['name'] as String),
             subtitle: Text(item['category'] as String),
+            trailing: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {}
+            )
           );
         },
       ),

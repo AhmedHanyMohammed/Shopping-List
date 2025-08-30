@@ -34,19 +34,19 @@ class MyHomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: ListView.builder(
-        itemCount: DummyItems.items.length,
+        itemCount: GroceryItems.items.length,
         itemBuilder: (context, index) {
-          final item = DummyItems.items[index];
+          final item = GroceryItems.items[index];
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: item['color'],
+              backgroundColor: item.color,
             ),
-            title: Text(item['name'] as String),
-            subtitle: Text(item['category'] as String),
+            title: Text(item.name),
+            subtitle: Text(item.category),
             trailing: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {}
-            )
+              icon: const Icon(Icons.add),
+              onPressed: () {},
+            ),
           );
         },
       ),

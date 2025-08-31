@@ -1,20 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/model/grocery_items.dart';
 
-class GroceryItem {
-  const GroceryItem({
-    required this.name,
-    required this.category,
-    required this.color,
-  });
-
-  final String name;
-  final String category;
-  final Color color;
-}
-
-
-class GroceryItems {
+class DummyItems {
   static final List<GroceryItem> items = [
     GroceryItem(
       name: 'Apple',

@@ -9,8 +9,8 @@ class Categories {
     'Meat': Colors.pink,
     'Beverages': Colors.orange,
     'Snacks': Colors.purple,
-    'Frozen Foods': Colors.cyan,
     'Household Items': Colors.teal,
     'Personal Care': Colors.indigo,
+    'Others': Colors.grey,
   };
 }

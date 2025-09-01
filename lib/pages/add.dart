@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/model/grocery_items.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({super.key, required this.onAdd});
@@ -15,7 +17,9 @@ class _AddItemPageState extends State<AddItemPage> {
   String? _selectedKey;
   static const double _colorDotSize = 14;
   final _nameController = TextEditingController();
+  final _urlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  int _quantity = 1;
 
   @override
   void initState() {
@@ -42,7 +46,7 @@ class _AddItemPageState extends State<AddItemPage> {
     );
   }
 
-  void _handleSave() {
+  void _handleSave() async{
     final name = _nameController.text.trim();
     if (name.isEmpty || _selectedKey == null) {
       _showMissingDialog(
@@ -54,11 +58,56 @@ class _AddItemPageState extends State<AddItemPage> {
       );
       return;
     }
-    final color = _categories[_selectedKey] ?? Colors.grey;
-    widget.onAdd(
-      GroceryItem(name: name, category: _selectedKey!, color: color),
+    if(_urlController.text.isNotEmpty){
+      final parsed = Uri.tryParse(_urlController.text.trim());
+      if(parsed == null || !(parsed.isAbsolute && (parsed.hasScheme && (parsed.scheme == 'http' || parsed.scheme == 'https')))){
+        _showMissingDialog('Please enter a valid URL.');
+        return;
+      }
+    }
+
+    final remoteUri = Uri.https(
+      'shopping-list-app-eac59-default-rtdb.firebaseio.com',
+      'shopping-list.json',
     );
-    Navigator.pop(context);
+
+    try {
+      final response = await http.post(
+        remoteUri,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'name': name,
+            'category': _selectedKey!,
+            'url': _urlController.text.trim(),
+            'quantity': _quantity,
+            'isComplete': false,
+        }),
+      );
+      String id = '';
+      try {
+        final data = json.decode(response.body);
+        id = data['name'] ?? '';
+      } catch (_) {}
+      widget.onAdd(
+        GroceryItem(
+          id: id,
+          name: name,
+          category: _selectedKey!,
+          quantity: _quantity,
+          url: _urlController.text.trim(),
+        ),
+      );
+    } catch (_) {
+      widget.onAdd(
+        GroceryItem(
+          name: name,
+          category: _selectedKey!,
+          quantity: _quantity,
+          url: _urlController.text.trim(),
+        ),
+      );
+    }
+    if (mounted) Navigator.pop(context);
   }
 
   @override
@@ -75,6 +124,14 @@ class _AddItemPageState extends State<AddItemPage> {
                 controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Item Name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _urlController,
+                decoration: const InputDecoration(
+                  labelText: 'Url',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -113,6 +170,22 @@ class _AddItemPageState extends State<AddItemPage> {
                     _selectedKey = val;
                   });
                 },
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Text('Quantity:'),
+                  const SizedBox(width: 12),
+                  IconButton(
+                    onPressed: _quantity > 1 ? () => setState(() => _quantity--) : null,
+                    icon: const Icon(Icons.remove_circle_outline),
+                  ),
+                  Text('$_quantity', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  IconButton(
+                    onPressed: () => setState(() => _quantity++),
+                    icon: const Icon(Icons.add_circle_outline),
+                  ),
+                ],
               ),
             ],
           ),

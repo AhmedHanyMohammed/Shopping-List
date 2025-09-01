@@ -1,4 +1,3 @@
-import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/model/grocery_items.dart';
 
 class DummyItems {
@@ -6,27 +5,27 @@ class DummyItems {
     GroceryItem(
       name: 'Apple',
       category: 'Fruits',
-      color: Categories.data['Fruits']!,
+      quantity: 5,
     ),
     GroceryItem(
       name: 'Carrot',
       category: 'Vegetables',
-      color: Categories.data['Vegetables']!,
+      quantity: 4,
     ),
     GroceryItem(
       name: 'Milk',
       category: 'Dairy',
-      color: Categories.data['Dairy']!,
+      quantity: 3,
     ),
     GroceryItem(
       name: 'Bread',
       category: 'Bakery',
-      color: Categories.data['Bakery']!,
+      quantity: 6,
     ),
     GroceryItem(
       name: 'Chicken',
       category: 'Meat',
-      color: Categories.data['Meat']!,
+      quantity: 2,
     ),
   ];
 }

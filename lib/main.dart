@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal , brightness: Brightness.dark),
       ),
-      home: const WidgetTree(), // moved the logic to widget_tree.dart
+      home: const WidgetTree(),
     );
   }
 }

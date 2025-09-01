@@ -123,8 +123,19 @@ class _WidgetTreeState extends State<WidgetTree> {
   Widget _buildList(List<GroceryItem> items, String emptyMsg) {
     if (items.isEmpty) return Center(child: Text(emptyMsg));
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: items.length + 1,
       itemBuilder: (context, i) {
+        if (i == items.length) {
+            return const SizedBox(
+              height: 72,
+              child: Center(
+                child: Text(
+                  '',
+                  style: TextStyle(color: Colors.transparent),
+                ),
+              ),
+            );
+        }
         final item = items[i];
         return GroceryItem.build(
           item,

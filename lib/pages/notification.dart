@@ -33,20 +33,22 @@ class _NotificationPageState extends State<NotificationPage> {
           ? const Center(child: Text('No activity yet'))
           : ListView.separated(
               padding: const EdgeInsets.all(12),
-              itemCount: events.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 6),
+              itemCount: events.length + 1, // +1 for bottom spacer
+              separatorBuilder: (_, idx) =>
+                  idx >= events.length - 1 ? const SizedBox.shrink() : const SizedBox(height: 6),
               itemBuilder: (context, i) {
+                if (i == events.length) {
+                  // bottom spacer
+                  return const SizedBox(height: 72);
+                }
                 final e = events[i];
                 final bool isNew = e.isNew;
                 return Container(
                   decoration: BoxDecoration(
-                    color: isNew
-                        ? Colors.amber.shade400
-                        : Colors.teal,
+                    color: isNew ? Colors.amber.shade400 : Colors.teal,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -60,9 +62,10 @@ class _NotificationPageState extends State<NotificationPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(e.text,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500)),
+                            Text(
+                              e.text,
+                              style: const TextStyle(fontWeight: FontWeight.w500),
+                            ),
                             const SizedBox(height: 4),
                             Text(
                               _formatTime(e.time),

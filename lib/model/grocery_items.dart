@@ -39,6 +39,7 @@ class GroceryItem {
     GroceryItem item,
     ValueChanged<GroceryItem> onChanged, {
     VoidCallback? onDelete,
+    List<Widget> extraActions = const [], // new
   }) {
     final bool completed = item.isComplete;
     final color = Categories.data[item.category] ?? Colors.grey;
@@ -55,7 +56,7 @@ class GroceryItem {
       leading: CircleAvatar(backgroundColor: color),
       title: Text('${item.name} (x${item.quantity})'),
       subtitle: Text(item.category),
-      onTap: hasUrl ? openUrl : null, // no action when there is no URL
+      onTap: hasUrl ? openUrl : null,
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -72,6 +73,7 @@ class GroceryItem {
               color: Colors.grey.shade700,
               onPressed: onDelete,
             ),
+          ...extraActions,
         ],
       ),
     );

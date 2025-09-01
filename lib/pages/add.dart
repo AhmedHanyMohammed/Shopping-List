@@ -128,14 +128,6 @@ class _AddItemPageState extends State<AddItemPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _urlController,
-                decoration: const InputDecoration(
-                  labelText: 'Url',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Category',
@@ -146,30 +138,38 @@ class _AddItemPageState extends State<AddItemPage> {
                 items: _categories.entries
                     .map(
                       (e) => DropdownMenuItem(
-                        value: e.key,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: _colorDotSize,
-                              height: _colorDotSize,
-                              decoration: BoxDecoration(
-                                color: e.value,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(e.key),
-                          ],
+                    value: e.key,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: _colorDotSize,
+                          height: _colorDotSize,
+                          decoration: BoxDecoration(
+                            color: e.value,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      ),
-                    )
+                        const SizedBox(width: 8),
+                        Text(e.key),
+                      ],
+                    ),
+                  ),
+                )
                     .toList(),
                 onChanged: (val) {
                   setState(() {
                     _selectedKey = val;
                   });
                 },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _urlController,
+                decoration: const InputDecoration(
+                  labelText: 'Url (optional)',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 16),
               Row(
